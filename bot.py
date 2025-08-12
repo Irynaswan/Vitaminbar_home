@@ -3,7 +3,7 @@ import telebot
 from telebot import types
 
 TOKEN = os.getenv("TOKEN")
-PDF_FILE = os.path.join(os.path.dirname(__file__, "brochure.pdf")
+PDF_FILE = os.path.join(os.path.dirname(__file__), "brochure.pdf" )
 
 bot = telebot.TeleBot(TOKEN)
 
