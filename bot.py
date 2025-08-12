@@ -43,5 +43,5 @@ def send_pdf(call):
         bot.answer_callback_query(call.id, "Не удалось открыть PDF 😕")
         print("PDF error:", e)
 
-if name == "main":
+if __name__ == "__main__":
     bot.infinity_polling(timeout=60, long_polling_timeout=60)
