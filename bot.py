@@ -6,7 +6,7 @@ from telebot import types
 TOKEN = os.getenv("TOKEN")
 
 # 2) Полный путь к PDF рядом с этим файлом
-PDF_FILE = os.path.join(os.path.dirname(file), "brochure.pdf")
+PDF_FILE = os.path.join(os.path.dirname(__file__), "brochure.pdf")
 
 bot = telebot.TeleBot(TOKEN)
 
