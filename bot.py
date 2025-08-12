@@ -21,7 +21,7 @@ def send_welcome(message):
 
     markup = types.InlineKeyboardMarkup()
     btn1 = types.InlineKeyboardButton("💳 Оплатить Revolut", url="https://revolut.me/irynaswan/9.90")
-    btn2 = types.InlineKeyboardButton("💳 Оплатить PayPal", url="https://www.paypal.me/krasotckina")
+    btn2 = types.InlineKeyboardButton("💳 Оплатить PayPal", url="https://paypal.me/IrynaKrasotkina754/9.90EUR")
     btn3 = types.InlineKeyboardButton("📥 Получить PDF", callback_data="get_pdf")
     markup.add(btn1)
     markup.add(btn2)
