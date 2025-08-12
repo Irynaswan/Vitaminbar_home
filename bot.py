@@ -2,7 +2,8 @@
 import telebot
 from telebot import types
 
-TOKEN = "7653751280:AAE2J8DmUJcdYwSrRxZ6uuguLg5fLL11rAS0"
+TOKEN ="7653751280:AAHlSP3YtfXmq_g6W04XZAX4vrv_95s8r2s"
+
 PDF_FILE = "brochure.pdf"
 
 bot = telebot.TeleBot(TOKEN)
