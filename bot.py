@@ -7,7 +7,8 @@ TOKEN = os.getenv("TOKEN")
 
 # 2) Полный путь к PDF рядом с этим файлом
 PDF_FILE = os.path.join(os.path.dirname(__file__), "brochure.pdf")
-
+ACCESS_CODE = os.getenv("ACCESS_CODE", "VITAMIN-999")
+pending_codes = set()  # здесь храним user_id, кому запросили код
 bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start'])
@@ -26,22 +27,39 @@ def send_welcome(message):
     markup.add(btn1)
     markup.add(btn2)
     markup.add(btn3)
-
-    bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
-
 @bot.callback_query_handler(func=lambda c: c.data == "get_pdf")
-def send_pdf(call):
-    try:
-        with open(PDF_FILE, "rb") as f:
-            bot.send_document(
-                call.message.chat.id,
-                f,
-                visible_file_name="Оздоровительные_напитки.pdf"
-            )
+def ask_code(call):
+    uid = call.from_user.id
+    pending_codes.add(uid)
+    bot.answer_callback_query(call.id)
+    bot.send_message(uid, "🔒 Для получения PDF введите *код доступа* (его видно после оплаты).", parse_mode="Markdown")
+    
         bot.answer_callback_query(call.id)
     except Exception as e:
         bot.answer_callback_query(call.id, "Не удалось открыть PDF 😕")
         print("PDF error:", e)
 
-if __name__ == "__main__":
+@bot.message_handler(func=lambda m: m.from_user.id in pending_codes)
+def check_code(msg):
+    code = msg.text.strip()
+    if code == ACCESS_CODE:
+        try:
+            with open(PDF_FILE, "rb") as f:
+                bot.send_document(
+                    msg.chat.id,
+                    f,
+                    visible_file_name="Оздоровительные_напитки.pdf"
+                )
+            bot.send_message(msg.chat.id, "Готово! Спасибо за оплату 🌿")
+        except Exception as e:
+            print("pdf error:", e)
+            bot.send_message(msg.chat.id, "Не удалось открыть PDF 😔")
+    else:
+        bot.reply_to(msg, "Код неверный — проверьте и попробуйте ещё раз. 😉")
+
+    # в любом случае убираем пользователя из «ожидающих кода»
+    pending_codes.discard(msg.from_user.id)
+
+if name == "main":
     bot.infinity_polling(timeout=60, long_polling_timeout=60)
+    
