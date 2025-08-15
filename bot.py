@@ -10,6 +10,17 @@ PDF_FILE = os.path.join(os.path.dirname(__file__), "brochure.pdf")
 ACCESS_CODE = os.getenv("ACCESS_CODE", "VITAMIN-999")
 pending_codes = set()  # здесь храним user_id, кому запросили код
 bot = telebot.TeleBot(TOKEN)
+# ---- keep Render web service happy: open a dummy HTTP port ----
+import threading, http.server, socketserver
+PORT = int(os.environ.get("PORT", 10000))
+
+def _run_dummy_server():
+    Handler = http.server.SimpleHTTPRequestHandler
+    with socketserver.TCPServer(("", PORT), Handler) as httpd:
+        httpd.serve_forever()
+
+threading.Thread(target=_run_dummy_server, daemon=True).start()
+# ----------------------------------------------------------------
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
