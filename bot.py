@@ -32,14 +32,14 @@ def ask_code(call):
     try:
         uid = call.from_user.id
         pending_codes.add(uid)
-bot.answer_callback_query(call.id)
+        bot.answer_callback_query(call.id)
         bot.send_message(
             uid,
-            "📄 Для получения PDF введите *код доступа* (его видно после оплаты).",
+            "🧾 Для получения PDF введите *код доступа* (его видно после оплаты).",
             parse_mode="Markdown"
         )
     except Exception as e:
-bot.answer_callback_query(call.id, "Не удалось открыть PDF 😔")
+        bot.answer_callback_query(call.id, "Не удалось открыть PDF 😔")
         print("PDF error:", e)
 
 @bot.message_handler(func=lambda m: m.from_user.id in pending_codes)
