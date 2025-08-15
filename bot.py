@@ -55,14 +55,13 @@ def check_code(msg):
                 )
             bot.send_message(msg.chat.id, "Готово! Спасибо за оплату 🌿")
         except Exception as e:
-            print("pdf error:", e)
             bot.send_message(msg.chat.id, "Не удалось открыть PDF 😔")
+            print("PDF error:", e)
+        finally:
+            # в любом случае убираем пользователя из «ожидающих кода»
+            pending_codes.discard(msg.from_user.id)
     else:
-        bot.reply_to(msg, "Код неверный — проверьте и попробуйте ещё раз. 😉")
-
-    # в любом случае убираем пользователя из «ожидающих кода»
-    pending_codes.discard(msg.from_user.id)
+        bot.reply_to(msg, "Код неверный — проверьте и попробуйте ещё раз 😉")
 
 if name == "main":
     bot.infinity_polling(timeout=60, long_polling_timeout=60)
-    
