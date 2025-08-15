@@ -63,5 +63,5 @@ def check_code(msg):
     else:
         bot.reply_to(msg, "Код неверный — проверьте и попробуйте ещё раз 😉")
 
-if name == "main":
+if __name__ == "__main__":
     bot.infinity_polling(timeout=60, long_polling_timeout=60)
