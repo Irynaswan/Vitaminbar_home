@@ -29,15 +29,18 @@ def send_welcome(message):
     markup.add(btn3)
 @bot.callback_query_handler(func=lambda c: c.data == "get_pdf")
 def ask_code(call):
-    uid = call.from_user.id
-    pending_codes.add(uid)
-    bot.answer_callback_query(call.id)
-    bot.send_message(uid, "🔒 Для получения PDF введите *код доступа* (его видно после оплаты).", parse_mode="Markdown")
-    
-    bot.answer_callback_query(call.id)
-except Exception as e:
-    bot.answer_callback_query(call.id, "Не удалось открыть PDF 😕")
-    print("PDF error:", e)
+    try:
+        uid = call.from_user.id
+        pending_codes.add(uid)
+        bot.answer_callback_query(call.id)
+        bot.send_message(
+            uid,
+            "📄 Для получения PDF введите *код доступа* (его видно после оплаты).",
+            parse_mode="Markdown"
+        )
+    except Exception as e:
+        bot.answer_callback_query(call.id, "Не удалось открыть PDF 😔")
+        print("PDF error:", e)
 
 @bot.message_handler(func=lambda m: m.from_user.id in pending_codes)
 def check_code(msg):
