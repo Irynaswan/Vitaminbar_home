@@ -34,7 +34,7 @@ def ask_code(call):
     bot.answer_callback_query(call.id)
     bot.send_message(uid, "🔒 Для получения PDF введите *код доступа* (его видно после оплаты).", parse_mode="Markdown")
     
-        bot.answer_callback_query(call.id)
+    bot.answer_callback_query(call.id)
     except Exception as e:
         bot.answer_callback_query(call.id, "Не удалось открыть PDF 😕")
         print("PDF error:", e)
